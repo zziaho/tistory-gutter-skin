@@ -74,8 +74,8 @@
       <name>author_name</name>
       <label>작성자 이름</label>
       <type>STRING</type>
-      <default>ZIAHO</default>
-      <description>구조화 데이터에 쓰는 작성자 이름</description>
+      <default></default>
+      <description>구조화 데이터에 쓰는 작성자 이름. 비워두면 작성자 정보를 넣지 않습니다.</description>
     </variable>
 
     <variable>

@@ -11,6 +11,10 @@
 
 </div>
 
+| 라이트 | 다크 |
+|:---:|:---:|
+| ![라이트 모드](screenshots/light.png) | ![다크 모드](screenshots/dark.png) |
+
 ---
 
 ## Why Gutter?
@@ -75,7 +79,7 @@ IDE 크롬(탭바·파일트리·상태바)은 일부러 그리지 않습니다.
 | `show_toc` | BOOL | `true` | 글 상세 좌측 목차 |
 | `show_categories` | BOOL | `true` | 우측 카테고리 목록 |
 | `subtitle` | STRING | 개발과 일상을 기록합니다 | 블로그 부제 |
-| `author_name` | STRING | ZIAHO | 구조화 데이터의 작성자 이름 |
+| `author_name` | STRING | - | 구조화 데이터의 작성자 이름. 비우면 `author` 를 넣지 않습니다 |
 | `author_url` | STRING | - | 작성자 프로필 주소 |
 | `adsense_client` | STRING | - | 애드센스 게시자 ID (`ca-pub-...`) |
 | `adsense_slot` | STRING | - | 본문 상단 광고 슬롯 ID |
@@ -96,13 +100,14 @@ git clone https://github.com/zziaho/tistory-gutter-skin.git
 
 ### 2. 스킨 등록
 
-`블로그 관리 > 꾸미기 > 스킨 등록` 에서 `skin/` 아래 네 파일을 모두 올린 뒤 적용합니다.
+`블로그 관리 > 꾸미기 > 스킨 등록` 에서 `skin/` 아래 파일을 모두 올린 뒤 적용합니다.
 
 | 파일 | 올릴 위치 |
 |------|-----------|
 | `index.xml` | 루트 |
 | `skin.html` | 루트 |
 | `style.css` | 루트 |
+| `preview.gif`, `preview256.jpg`, `preview560.jpg`, `preview1600.jpg` | 루트 |
 | `images/script.js` | **`images/` 아래** |
 
 `script.js` 의 경로가 중요합니다. `skin.html` 이 `./images/script.js` 로
@@ -113,7 +118,7 @@ git clone https://github.com/zziaho/tistory-gutter-skin.git
 `블로그 관리 > 꾸미기 > 스킨 편집 > 스킨 설정` 에서 위 표의 11개 옵션을 조정합니다.
 
 `index.xml` 은 스킨 편집기에서 열리지 않습니다. 옵션 **값**은 이 화면에서 바꾸지만,
-옵션 **선언** 자체를 바꿨다면 스킨 등록 경로로 네 파일을 다시 올려야 반영됩니다.
+옵션 **선언** 자체를 바꿨다면 스킨 등록 경로로 파일을 다시 올려야 반영됩니다.
 
 ### 4. 광고 (선택)
 
@@ -169,9 +174,16 @@ skin/
 ├── index.xml          # 스킨 정보 + 스킨 옵션 11개
 ├── skin.html          # 전 페이지 공용 템플릿
 ├── style.css          # 전체 스타일시트 (CSS 커스텀 프로퍼티)
+├── preview.gif        # 112x84   관리자 화면 폴백
+├── preview256.jpg     # 256x192  적용 중인 스킨 표시
+├── preview560.jpg     # 560x420  스킨 목록 카드
+├── preview1600.jpg    # 1600x1200 스킨 상세
 └── images/
     └── script.js      # 메인 JavaScript (11개 모듈)
 ```
+
+`preview*` 는 티스토리 관리자 화면에서만 쓰입니다. 블로그 방문자에게는 보이지
+않고, 파일명과 크기가 플랫폼 규약으로 고정되어 있습니다.
 
 `skin.html` 하나가 홈·목록·글·카테고리·검색·태그·방명록을 전부 렌더링합니다.
 페이지 종류별로 파일이 나뉘지 않고, URL 에 따라 그룹 치환자 블록이 켜지고 꺼집니다.
@@ -197,9 +209,6 @@ skin/
 
 ## Known Limitations
 
-- **미리보기 이미지가 없습니다.** `preview.gif`(112x84), `preview256.jpg`,
-  `preview560.jpg`, `preview1600.jpg`. 없어도 등록·적용은 되지만 스킨 목록에서
-  썸네일이 비어 보입니다.
 - **`index.xml` 에 `<default>` 섹션이 없습니다.** `recentEntries`,
   `contentWidth`, 요약 말줄임 길이 등이 전부 플랫폼 기본값으로 동작합니다.
 - **highlight.js CDN 의존.** cdnjs 장애 시 코드블록이 무채색으로 떨어집니다.
