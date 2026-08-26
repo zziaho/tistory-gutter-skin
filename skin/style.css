@@ -35,7 +35,7 @@
   --inline-bg:  #f6f5f1;
 
   --radius:     8px;
-  --measure:    72ch;
+  --measure:    82ch;
   --pad-x:      16px;   /* 모바일 본문 좌우 여백. 코드블록 풀블리드 계산에 사용 */
 
   --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, "Malgun Gothic", sans-serif;
@@ -103,7 +103,7 @@ img { max-width: 100%; height: auto; }
 .mono { font-family: var(--font-mono); }
 .dim  { color: var(--fg-dim); }
 
-.container { max-width: 1272px; margin: 0 auto; padding: 0 40px; }
+.container { max-width: 1400px; margin: 0 auto; padding: 0 40px; }
 
 /* ---------- 3. 헤더 ---------- */
 .site-header {
@@ -191,10 +191,10 @@ html.dark .i-moon { display: block; }
    밀려 본문이 200px 짜리 목차 자리에 들어갑니다. 칼럼 정의 자체를 분기시켜 막습니다. */
 html.is-post .layout {
   grid-template-columns: minmax(0, 1fr) 240px;
-  gap: 56px;
+  gap: 48px;
   padding-top: 48px;
 }
-html.is-post.has-toc .layout { grid-template-columns: 200px minmax(0, 1fr) 240px; }
+html.is-post.has-toc .layout { grid-template-columns: 190px minmax(0, 1fr) 240px; }
 .content-col { min-width: 0; }
 
 /* ---------- 6. 레일 (목차 · 카테고리) ---------- */
