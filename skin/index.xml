@@ -13,6 +13,33 @@
     <email><![CDATA[]]></email>
   </author>
 
+  <!-- 스킨이 권장하는 설정 기본값. 관리 화면의 스킨 설정과 달리 여기 값은
+       사용자에게 노출되지 않고 스킨이 정합니다.
+       showValue 가 핵심입니다. 이걸 켜야 카테고리에 글 수가 붙고,
+       script.js 의 initCategoryCount 가 그 숫자를 읽어 글 하단에 (N files) 를
+       표시합니다. 꺼져 있으면 그 기능이 조용히 동작하지 않습니다. -->
+  <default>
+    <entriesOnPage>10</entriesOnPage>
+    <entriesOnList>10</entriesOnList>
+    <itemsOnGuestbook>10</itemsOnGuestbook>
+    <tagsInCloud>40</tagsInCloud>
+    <sortInCloud>1</sortInCloud>
+    <expandComment>1</expandComment>
+    <expandTrackback>0</expandTrackback>
+    <showListOnCategory>1</showListOnCategory>
+    <tree>
+      <color>000000</color>
+      <bgColor>ffffff</bgColor>
+      <activeColor>000000</activeColor>
+      <activeBgColor>eeeeee</activeBgColor>
+      <labelLength>27</labelLength>
+      <showValue>1</showValue>
+    </tree>
+    <!-- 본문 문단 폭에 맞춥니다. style.css 의 measure 토큰 82ch 가 약 745px 입니다.
+         에디터 위지윅 폭이 실제 화면과 어긋나지 않게 하는 값입니다. -->
+    <contentWidth>745</contentWidth>
+  </default>
+
   <variables>
     <variable>
       <name>accent</name>

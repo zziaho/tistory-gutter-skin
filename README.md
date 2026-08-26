@@ -221,8 +221,6 @@ skin/
 
 ## Known Limitations
 
-- **`index.xml` 에 `<default>` 섹션이 없습니다.** `recentEntries`,
-  `contentWidth`, 요약 말줄임 길이 등이 전부 플랫폼 기본값으로 동작합니다.
 - **highlight.js CDN 의존.** cdnjs 장애 시 코드블록이 무채색으로 떨어집니다.
 
 ## Credits
