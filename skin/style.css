@@ -168,6 +168,10 @@ html.dark .i-moon { display: block; }
   border: 0; background: none; outline: none;
   font-family: var(--font-mono); font-size: 14px; color: var(--fg);
 }
+/* .search-input 에서 outline 을 지웠으므로 포커스 표시를 감싸는 패널이 냅니다.
+   :focus-within 이라 마우스로 눌렀을 때도 초점 위치가 보입니다. */
+.search-panel:focus-within { border-color: var(--link); }
+
 .search-go, .search-close {
   border: 0; background: none; cursor: pointer;
   font-family: var(--font-mono); font-size: 12px; color: var(--fg-dim);
