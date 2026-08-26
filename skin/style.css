@@ -502,6 +502,63 @@ html.is-post .auto-title { display: none; }
 }
 .post-tags a:hover { color: var(--accent); text-decoration: none; }
 
+/* '카테고리의 다른 글' — 티스토리가 .post-content 안에 주입하는 블록입니다
+   (PostListinCategory). 플랫폼 소유라 구조는 못 바꾸고, 우리 표 규칙과
+   브라우저 기본값이 섞여 어색해지므로 여기서 눌러 씁니다.
+   본문 표 규칙(.post-content th/td 의 테두리)을 이기려면 선택자가 더 길어야 합니다. */
+.post-content .another_category {
+  margin: 44px 0 0; padding: 24px 0 0;
+  border: 0; background: none;
+  border-top: 1px solid var(--line-strong);
+}
+.post-content .another_category h4 {
+  margin: 0 0 14px; padding: 0; border: 0;
+  font-family: var(--font-mono); font-weight: 400;
+  font-size: 11px; letter-spacing: 0.09em; color: var(--fg-dim);
+}
+.post-content .another_category h4 a {
+  color: var(--fg-dim); text-decoration: none;
+}
+.post-content .another_category h4 a:hover { color: var(--accent); }
+
+/* 폭을 100% 로 두면 날짜가 본문 오른쪽 끝까지 밀려 제목과 사이가 크게 벌어집니다.
+   auto 로 두면 가장 긴 제목 기준으로 표가 줄어들어 날짜가 제목 뒤에 붙습니다. */
+.post-content .another_category table {
+  width: auto; max-width: 100%;
+  margin: 0; border-collapse: collapse; font-size: inherit;
+}
+.post-content .another_category tr { border-top: 1px solid var(--line); }
+.post-content .another_category tr:first-child { border-top: 0; }
+
+/* th 는 기본이 가운데 정렬 + 굵게라 날짜 열과 어긋나 보입니다. 둘 다 되돌립니다. */
+.post-content .another_category th,
+.post-content .another_category td {
+  border: 0; background: none;
+  padding: 9px 0; vertical-align: baseline;
+}
+.post-content .another_category th {
+  text-align: left; font-weight: 400;
+}
+.post-content .another_category th a {
+  font-size: 14.5px; color: var(--fg-body); text-decoration: none;
+}
+.post-content .another_category th a:hover { color: var(--link); }
+/* 댓글 수 */
+.post-content .another_category th span {
+  font-family: var(--font-mono); font-size: 11px; color: var(--fg-dim);
+}
+/* 날짜 — 모노스페이스로 오른쪽에 붙여 자릿수가 흔들리지 않게 합니다. */
+.post-content .another_category td {
+  white-space: nowrap; text-align: right;
+  padding-left: 28px;
+  font-family: var(--font-mono); font-size: 11.5px; color: var(--fg-dim);
+}
+
+@media (max-width: 768px) {
+  .post-content .another_category th a { font-size: 14px; }
+  .post-content .another_category td { font-size: 11px; padding-left: 10px; }
+}
+
 /* 관리 도구 — 글 주인에게만 보입니다 (s_ad_div 가 방문자에겐 렌더링되지 않음).
    본문 위에 두되, 읽는 흐름을 방해하지 않게 작고 조용하게. */
 .admin-tools {

@@ -357,6 +357,9 @@
     $$('table', content).forEach(function (t) {
       var p = t.parentNode;
       if (!p || (p.classList && p.classList.contains('table-scroll'))) return;
+      // 티스토리가 주입하는 '카테고리의 다른 글' 표는 본문 표가 아니라 목록이라
+      // 가로 스크롤 래퍼를 씌우지 않습니다.
+      if (t.closest && t.closest('.another_category')) return;
       var wrap = document.createElement('div');
       wrap.className = 'table-scroll';
       p.insertBefore(wrap, t);
