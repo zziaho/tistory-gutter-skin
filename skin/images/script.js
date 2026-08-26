@@ -217,6 +217,10 @@
     var content = $('[data-post-content]');
     if (!rail || !toc || !content) return;
 
+    // 목차를 낼지는 skin.html 의 인라인 스크립트가 이미 정했습니다.
+    // 여기서 다시 판정하면 두 곳의 기준이 어긋날 수 있으므로 클래스만 봅니다.
+    if (!document.documentElement.classList.contains('has-toc')) return;
+
     var heads = $$('h2, h3', content).filter(function (h) {
       return (h.textContent || '').trim().length > 0;
     });
@@ -242,7 +246,6 @@
       h.appendChild(anchor);
     });
 
-    rail.removeAttribute('hidden');
 
     if (!('IntersectionObserver' in window)) return;
     var active = null;

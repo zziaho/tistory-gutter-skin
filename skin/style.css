@@ -185,11 +185,16 @@ html.dark .i-moon { display: block; }
   padding-top: 52px;
   padding-bottom: 80px;
 }
+/* 글 상세는 목차 유무로 2단/3단이 갈립니다.
+   목차 레일은 hidden 으로 시작하고, script.js 가 제목을 2개 이상 찾았을 때만 엽니다.
+   hidden 은 display:none 이라 그리드에서 아예 빠지고, 그러면 남은 요소가 앞 칼럼으로
+   밀려 본문이 200px 짜리 목차 자리에 들어갑니다. 칼럼 정의 자체를 분기시켜 막습니다. */
 html.is-post .layout {
-  grid-template-columns: 200px minmax(0, 1fr) 240px;  /* 글 상세 */
+  grid-template-columns: minmax(0, 1fr) 240px;
   gap: 56px;
   padding-top: 48px;
 }
+html.is-post.has-toc .layout { grid-template-columns: 200px minmax(0, 1fr) 240px; }
 .content-col { min-width: 0; }
 
 /* ---------- 6. 레일 (목차 · 카테고리) ---------- */
@@ -199,25 +204,23 @@ html.is-post .layout {
   font-size: 10px; letter-spacing: 0.11em; color: var(--fg-dim);
   margin-bottom: 12px;
 }
+/* 목차 레일의 표시 여부와 그리드 칼럼 수를 같은 조건(has-toc)으로 묶습니다.
+   전에는 레일을 hidden 속성으로 감췄는데, display:none 은 그리드에서 요소를
+   통째로 빼버려 본문이 목차 칼럼으로 밀려 들어갔습니다. */
 .rail-toc { display: none; }
-html.is-post .rail-toc { display: block; }
+html.is-post.has-toc .rail-toc { display: block; }
 
 /* 스킨 옵션 — body 의 data-* 값으로 분기합니다.
    BOOL 옵션은 "true"/"false" 가 아니라 1 / 0 으로 치환되므로 둘 다 받습니다.
    속성명은 목차 컨테이너의 data-toc 과 겹치지 않게 data-show-toc 을 씁니다. */
 body[data-show-toc="0"] .rail-toc,
 body[data-show-toc="false"] .rail-toc { display: none !important; }
-html.is-post body[data-show-toc="0"] .layout,
-html.is-post body[data-show-toc="false"] .layout { grid-template-columns: minmax(0, 1fr) 240px; }
-
 body[data-show-cats="0"] .rail-cat,
 body[data-show-cats="false"] .rail-cat { display: none !important; }
 body[data-show-cats="0"] .layout,
 body[data-show-cats="false"] .layout { grid-template-columns: minmax(0, 1fr); }
-html.is-post body[data-show-cats="0"] .layout,
-html.is-post body[data-show-cats="false"] .layout { grid-template-columns: 200px minmax(0, 1fr); }
-html.is-post body[data-show-toc="0"][data-show-cats="0"] .layout,
-html.is-post body[data-show-toc="false"][data-show-cats="false"] .layout { grid-template-columns: minmax(0, 1fr); }
+html.is-post.has-toc body[data-show-cats="0"] .layout,
+html.is-post.has-toc body[data-show-cats="false"] .layout { grid-template-columns: 200px minmax(0, 1fr); }
 
 .toc a {
   display: block; padding: 6px 0 6px 13px;
@@ -583,14 +586,16 @@ ins.adsbygoogle:not(.ad-inarticle) {
 
 /* ---------- 14. 반응형 ---------- */
 @media (max-width: 1180px) {
-  html.is-post .layout { grid-template-columns: 200px minmax(0, 1fr); gap: 48px; }
+  html.is-post .layout { grid-template-columns: minmax(0, 1fr); gap: 48px; }
+  html.is-post.has-toc .layout { grid-template-columns: 200px minmax(0, 1fr); gap: 48px; }
   .rail-cat { display: none; }
   .layout { grid-template-columns: minmax(0, 1fr); }
 }
 
 @media (max-width: 900px) {
   .container { padding: 0 24px; }
-  html.is-post .layout { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  html.is-post .layout,
+  html.is-post.has-toc .layout { grid-template-columns: minmax(0, 1fr); gap: 0; }
 
   /* 목차는 본문 위 접이식 상자로 */
   .rail, html.is-post .rail-toc { position: static; }

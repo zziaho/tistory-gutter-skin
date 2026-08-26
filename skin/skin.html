@@ -110,7 +110,7 @@
   <div class="container layout">
 
     <!-- ---------- 좌측: 목차 (글 상세에서만 채워짐) ---------- -->
-    <aside class="rail rail-toc" data-toc-rail hidden>
+    <aside class="rail rail-toc" data-toc-rail>
       <div class="rail-label">OUTLINE</div>
       <nav class="toc" data-toc aria-label="목차"></nav>
     </aside>
@@ -191,6 +191,24 @@
             </s_if_var_adsense_slot>
 
             <div class="post-content" data-post-content>[##_article_rep_desc_##]</div>
+
+            <!-- 목차 유무 판정. 본문 바로 뒤에서 파싱 중에 실행되므로 첫 페인트 전에
+                 결과가 정해지고, 2단 -> 3단 전환이 눈에 보이지 않습니다.
+                 여기가 "목차를 낼지" 의 유일한 판단 지점입니다. script.js 는 이 클래스를
+                 보고 따라갑니다. -->
+            <script>
+              (function () {
+                var c = document.querySelector('[data-post-content]');
+                if (!c || !document.body) return;
+                var opt = document.body.getAttribute('data-show-toc');
+                if (opt === '0' || opt === 'false') return;
+                var hs = c.querySelectorAll('h2, h3'), n = 0;
+                for (var i = 0; i < hs.length; i++) {
+                  if ((hs[i].textContent || '').trim()) n++;
+                }
+                if (n >= 2) document.documentElement.classList.add('has-toc');
+              })();
+            </script>
 
             <s_tag_label>
               <div class="post-tags mono">
