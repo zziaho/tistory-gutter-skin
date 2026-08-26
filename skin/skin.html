@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[##_page_title_##]</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+
+  <!-- 폰트: static 전체 패밀리 대신 가변 + 동적 서브셋. 등록 폰트 수가 46 -> 1 로 줄어 CLS 원인이 사라집니다. -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="./style.css">
+
+  <!-- 애드센스 로더. async 라 렌더링을 막지 않습니다.
+       티스토리 수익 설정이 넣는 유닛도 같은 라이브러리를 씁니다.
+       게시자 ID 는 스킨 옵션입니다. 비워두면 이 블록 자체가 출력되지 않습니다. -->
+  <s_if_var_adsense_client>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=[##_var_adsense_client_##]" crossorigin="anonymous"></script>
+  </s_if_var_adsense_client>
+
+  <!-- 다크모드 FOUC 방지: 스타일시트 뒤, 렌더 전에 실행 -->
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('gutter-theme');
+        // BOOL 스킨 옵션은 "true"/"false" 가 아니라 1 / 0 으로 치환됩니다.
+        var flag = '[##_var_dark_mode_default_##]';
+        var byDefault = (flag === '1' || flag === 'true');
+        var dark = saved === 'dark' || (!saved && (byDefault || window.matchMedia('(prefers-color-scheme: dark)').matches));
+        if (dark) { document.documentElement.classList.add('dark'); }
+      } catch (e) {}
+    })();
+  </script>
+
+  <!-- 스킨 옵션 -> CSS 커스텀 프로퍼티 -->
+  <style>
+    :root {
+      --accent: [##_var_accent_##];
+      --link: [##_var_link_color_##];
+    }
+  </style>
+</head>
+
+<!-- 스킨 옵션은 조건 블록 대신 data-* 속성으로 내려보내고 CSS/JS 가 분기합니다.
+     값 치환자만 쓰는 방식이 실제로 검증된 문법입니다. -->
+<body id="[##_body_id_##]"
+      data-line-numbers="[##_var_line_numbers_##]"
+      data-show-toc="[##_var_show_toc_##]"
+      data-show-cats="[##_var_show_categories_##]">
+
+<!-- ============================================================
+     HEADER
+     ============================================================ -->
+<header class="site-header">
+  <div class="container header-inner">
+    <!-- 로고는 h1 이 아닙니다. 글 제목이 페이지의 유일한 h1 이 되도록. -->
+    <div class="brand">
+      <a href="[##_blog_link_##]" class="brand-name">[##_title_##]<span class="brand-caret">_</span></a>
+    </div>
+
+    <nav class="site-nav" aria-label="주 메뉴">
+      [##_blog_menu_##]
+    </nav>
+
+    <div class="header-actions">
+      <button type="button" class="icon-btn" data-action="open-search" aria-label="검색 열기">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><line x1="20.5" y1="20.5" x2="16" y2="16"></line></svg>
+      </button>
+      <button type="button" class="icon-btn" data-action="toggle-theme" aria-label="다크모드 전환">
+        <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"></circle><path d="M12 2v2M12 20v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2 12h2M20 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"></path></svg>
+        <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button type="button" class="icon-btn only-mobile" data-action="toggle-menu" aria-label="메뉴" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="mobile-drawer" data-mobile-drawer hidden>
+    <nav aria-label="모바일 메뉴">[##_blog_menu_##]</nav>
+  </div>
+
+  <div class="progress" aria-hidden="true"><div class="progress-bar" data-progress></div></div>
+</header>
+
+<!-- ============================================================
+     SEARCH OVERLAY
+     ============================================================ -->
+<div class="search-overlay" data-search-overlay hidden>
+  <div class="search-panel">
+    <s_search>
+      <input type="text" class="search-input" data-search-input
+             name="[##_search_name_##]" value="[##_search_text_##]"
+             placeholder="검색어를 입력하세요" autocomplete="off"
+             onkeypress="if (event.keyCode == 13) { [##_search_onclick_submit_##] }">
+      <button type="button" class="search-go" onclick="[##_search_onclick_submit_##]">검색</button>
+    </s_search>
+    <button type="button" class="search-close" data-action="close-search" aria-label="닫기">esc</button>
+  </div>
+</div>
+
+<!-- ============================================================
+     MAIN
+     ============================================================ -->
+<main id="content">
+  <div class="container layout">
+
+    <!-- ---------- 좌측: 목차 (글 상세에서만 채워짐) ---------- -->
+    <aside class="rail rail-toc" data-toc-rail hidden>
+      <div class="rail-label">OUTLINE</div>
+      <nav class="toc" data-toc aria-label="목차"></nav>
+    </aside>
+
+    <!-- ---------- 가운데: 본문 ---------- -->
+    <div class="content-col">
+
+      [##_revenue_list_upper_##]
+
+      <!-- 목록 페이지 머리말(카테고리 h1)은 일단 뺐습니다.
+           list 그룹 치환자를 반복 블록 없이 머리말로만 쓰는 용법이 공식 문서에 없고,
+           스킨 적용 실패의 1순위 후보였습니다. 적용이 확인되면 다시 시도합니다. -->
+
+      <!-- 공지 -->
+      <s_notice_rep>
+        <article class="post-card notice">
+          <div class="post-meta mono"><span class="tag-notice">NOTICE</span><span class="dim">// [##_notice_rep_simple_date_##]</span></div>
+          <h2 class="post-card-title"><a href="[##_notice_rep_link_##]">[##_notice_rep_title_##]</a></h2>
+          <p class="post-card-summary">[##_notice_rep_summary_##]</p>
+        </article>
+      </s_notice_rep>
+
+      <s_article_rep>
+
+        <!-- ========== 목록(인덱스) ========== -->
+        <s_index_article_rep>
+          <article class="post-card">
+            <div class="post-meta mono">
+              <a class="post-path" href="[##_article_rep_category_link_##]" data-category-path>[##_article_rep_category_##]</a>
+              <span class="dim">// [##_article_rep_simple_date_##]</span>
+            </div>
+            <h2 class="post-card-title"><a href="[##_article_rep_link_##]">[##_article_rep_title_##]</a></h2>
+            <p class="post-card-summary">[##_article_rep_summary_##]</p>
+          </article>
+        </s_index_article_rep>
+
+        <!-- ========== 글 상세(퍼머링크) ========== -->
+        <s_permalink_article_rep>
+          <script>document.documentElement.classList.add('is-post');</script>
+
+          <article class="post">
+            <div class="post-path-line mono">
+              <a href="[##_blog_link_##]">~</a>/<a href="[##_article_rep_category_link_##]" data-category-path>[##_article_rep_category_##]</a>
+            </div>
+
+            <h1 class="post-title">[##_article_rep_title_##]</h1>
+
+            <div class="post-meta-line mono">
+              // [##_article_rep_simple_date_##]
+              <span data-readtime></span>
+            </div>
+
+            <!-- 관리 도구. 이 블록은 글 주인으로 로그인했을 때만 출력됩니다.
+                 방문자에게는 렌더링 자체가 되지 않습니다. -->
+            <s_ad_div>
+              <div class="admin-tools mono">
+                <a class="admin-btn" href="[##_s_ad_m_link_##]" onclick="[##_s_ad_m_onclick_##]">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                  수정
+                </a>
+                <a class="admin-btn" href="[##_s_ad_s1_label_##]" onclick="[##_s_ad_s2_onclick_##]">[##_s_ad_s2_label_##]</a>
+                <a class="admin-btn danger" href="#" onclick="[##_s_ad_d_onclick_##]">삭제</a>
+              </div>
+            </s_ad_div>
+
+            <!-- 본문 상단 광고 (직접 삽입 유닛).
+                 data-ad-format="auto" 를 쓰지 않습니다. auto 는 광고가 도착하기 전 높이가 0이라
+                 본문을 아래로 밀어냅니다. 고정 크기는 CSS 가 미리 자리를 잡아 이동이 없습니다.
+                 데스크톱 336x280 / 모바일 300x250 — 크기는 style.css 의 .ad-inarticle 에서 조정합니다. -->
+            <s_if_var_adsense_slot>
+            <div class="ad-slot">
+              <ins class="adsbygoogle ad-inarticle"
+                   style="display:inline-block"
+                   data-ad-client="[##_var_adsense_client_##]"
+                   data-ad-slot="[##_var_adsense_slot_##]"></ins>
+              <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+            </div>
+            </s_if_var_adsense_slot>
+
+            <div class="post-content" data-post-content>[##_article_rep_desc_##]</div>
+
+            <s_tag_label>
+              <div class="post-tags mono">
+                <s_tag_label_rep><a href="[##_tag_link_##]">#[##_tag_name_##]</a></s_tag_label_rep>
+              </div>
+            </s_tag_label>
+
+            <!-- 이전 / 다음 글
+                 주의: 치환자 이름은 article_prev_link 입니다. prev_link 는 존재하지 않아
+                 빈 문자열이 되고 href="" 인 링크가 남습니다. -->
+            <nav class="post-nav" aria-label="이전 다음 글">
+              <s_article_prev>
+                <a class="post-nav-item" href="[##_article_prev_link_##]">
+                  <span class="post-nav-label mono"><span class="arrow">&#8592;</span> 이전 글</span>
+                  <span class="post-nav-title">[##_article_prev_title_##]</span>
+                </a>
+              </s_article_prev>
+              <s_article_next>
+                <a class="post-nav-item next" href="[##_article_next_link_##]">
+                  <span class="post-nav-label mono">다음 글 <span class="arrow">&#8594;</span></span>
+                  <span class="post-nav-title">[##_article_next_title_##]</span>
+                </a>
+              </s_article_next>
+              <a class="post-nav-up mono" href="[##_article_rep_category_link_##]" data-category-up>cd ../ <span class="path">[##_article_rep_category_##]</span></a>
+            </nav>
+
+            <!-- 구조화 데이터: 플랫폼이 BlogPosting 만 넣어주므로 여기서 보강합니다.
+                 canonical / meta description / publisher 는 스킨에서 제어할 수 없습니다. -->
+            <script type="application/ld+json">
+            {
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              "itemListElement": [
+                { "@type": "ListItem", "position": 1, "name": "[##_title_##]", "item": "[##_blog_link_##]" },
+                { "@type": "ListItem", "position": 2, "name": "[##_article_rep_category_##]", "item": "[##_article_rep_category_link_##]" },
+                { "@type": "ListItem", "position": 3, "name": "[##_article_rep_title_##]", "item": "[##_article_rep_link_##]" }
+              ]
+            }
+            </script>
+          </article>
+
+          <section class="comments" id="comments">
+            [##_comment_group_##]
+          </section>
+        </s_permalink_article_rep>
+
+      </s_article_rep>
+
+      <!-- ========== 페이지 ========== -->
+      <s_page_rep>
+        <article class="post">
+          <h1 class="post-title">[##_article_rep_title_##]</h1>
+          <div class="post-meta-line mono">// [##_article_rep_simple_date_##]</div>
+          <div class="post-content" data-post-content>[##_article_rep_desc_##]</div>
+        </article>
+      </s_page_rep>
+
+      <!-- ========== 보호글 ========== -->
+      <s_article_protected>
+        <div class="protected">
+          <h1 class="post-title">[##_article_rep_title_##]</h1>
+          <p class="protected-msg">비밀번호가 필요한 글입니다.</p>
+          <div class="protected-form">
+            <input type="password" id="[##_article_password_##]" maxlength="16" class="search-input">
+            <button type="button" class="search-go" onclick="[##_article_dissolve_##]">확인</button>
+          </div>
+        </div>
+      </s_article_protected>
+
+      <!-- ========== 방명록 ========== -->
+      <div class="guestbook">[##_guestbook_group_##]</div>
+
+      <!-- ========== 태그 클라우드 (/tag) ========== -->
+      <s_tag>
+        <div class="tagcloud">
+          <h1 class="list-title">Tags</h1>
+          <div class="tagcloud-list mono">
+            <s_tag_rep><a href="[##_tag_link_##]" class="[##_tag_class_##]">#[##_tag_name_##]</a></s_tag_rep>
+          </div>
+        </div>
+      </s_tag>
+
+      <!-- ========== 페이징 ========== -->
+      <s_paging>
+        <nav class="paging mono" aria-label="페이지">
+          <a href="[##_prev_page_##]" class="page-arrow [##_no_more_prev_##]">&#8592;</a>
+          <s_paging_rep><a href="[##_paging_rep_link_##]" class="page-num">[##_paging_rep_link_num_##]</a></s_paging_rep>
+          <a href="[##_next_page_##]" class="page-arrow [##_no_more_next_##]">&#8594;</a>
+        </nav>
+      </s_paging>
+
+      [##_revenue_list_lower_##]
+
+    </div>
+
+    <!-- ---------- 우측: 카테고리 ---------- -->
+    <aside class="rail rail-cat">
+      <div class="rail-label">CATEGORIES</div>
+      <!-- 폴더형 카테고리 치환자는 table + gif + onclick 마크업이라 진짜 링크가 아닙니다.
+           리스트형은 ul/li/a 로 나와 크롤 가능하고 스타일링도 됩니다. -->
+      <div class="category-tree" data-category-tree>[##_category_list_##]</div>
+    </aside>
+
+  </div>
+</main>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="site-footer">
+  <div class="container footer-inner mono">
+    <span class="dim">&copy; <span data-year></span> [##_title_##]</span>
+    <span class="footer-links">
+      <a href="[##_rss_url_##]">rss</a>
+      <a href="[##_guestbook_link_##]">guestbook</a>
+      <a href="[##_taglog_link_##]">tags</a>
+    </span>
+  </div>
+</footer>
+
+<!-- 작성자 엔티티: 플랫폼 JSON-LD 의 publisher 가 TISTORY 로 고정되어 있어
+     귀속 대상이 없는 문제를 보강합니다. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "[##_title_##]",
+  "url": "[##_blog_link_##]",
+  "inLanguage": "ko",
+  "author": {
+    "@type": "Person",
+    "name": "[##_var_author_name_##]",
+    "url": "[##_var_author_url_##]"
+  }
+}
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" defer></script>
+<script src="./images/script.js" defer></script>
+
+<!-- 티스토리 공통 스크립트 (필수) -->
+<s_t3></s_t3>
+
+</body>
+</html>
