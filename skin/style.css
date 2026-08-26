@@ -257,6 +257,16 @@ html.is-post.has-toc body[data-show-cats="false"] .layout { grid-template-column
 
 /* ---------- 7. 목록 ---------- */
 .list-head { margin-bottom: 32px; }
+/* 목록 머리말은 모든 페이지 종류에서 출력됩니다. 자체 h1 을 이미 가진 페이지에서만
+   숨깁니다 — body id 는 [##_body_id_##] 가 채웁니다.
+   tt-body-page 하나가 글(s_permalink_article_rep) · 페이지(s_page_rep) ·
+   보호글(s_article_protected) 셋을 모두 덮습니다.
+   html.is-post 는 JS 가 붙기 전 첫 페인트를 위한 보조 조건입니다. */
+body#tt-body-page .auto-title,
+body#tt-body-guestbook .auto-title,
+body#tt-body-tag .auto-title,
+html.is-post .auto-title { display: none; }
+
 .list-title {
   margin: 0 0 6px;
   font-size: 27px; font-weight: 700; letter-spacing: -0.026em; color: var(--fg);
