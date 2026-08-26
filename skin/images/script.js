@@ -331,6 +331,23 @@
     if (el) el.textContent = new Date().getFullYear();
   }
 
+  /* 태그. [##_tag_label_rep_##] 은 링크 사이에 쉼표를 넣어 출력합니다.
+     칩 모양으로 보여주려면 그 텍스트 노드를 걷어내고 # 를 붙여야 합니다. */
+  function initTags() {
+    var box = $('.post-tags');
+    if (!box) return;
+    var links = $$('a', box);
+    if (!links.length) { box.setAttribute('hidden', ''); return; }
+
+    Array.prototype.slice.call(box.childNodes).forEach(function (n) {
+      if (n.nodeType === 3) { box.removeChild(n); }
+    });
+    links.forEach(function (a) {
+      var t = (a.textContent || '').trim();
+      if (t.charAt(0) !== '#') { a.textContent = '#' + t; }
+    });
+  }
+
   /* 표를 스크롤 래퍼로 감쌉니다. CSS 만으로는 못 합니다 --
      table 에 직접 overflow 를 걸려면 display 를 바꿔야 하는데
      그 순간 테이블 레이아웃이 깨지기 때문입니다. */
@@ -359,6 +376,7 @@
     initCategoryCount();
     initLightbox();
     initTables();
+    initTags();
     initYear();
   }
 

@@ -216,10 +216,12 @@
               })();
             </script>
 
+            <!-- 태그. 반복 블록이 아니라 값 치환자 하나가 태그 목록 전체를
+                 <a> 링크 + 쉼표 형태로 출력합니다. s_tag_label_rep 이나
+                 [##_tag_name_##] 은 태그 클라우드용이라 여기서는 빈 값이 됩니다.
+                 쉼표 제거와 # 접두는 script.js 의 initTags 가 맡습니다. -->
             <s_tag_label>
-              <div class="post-tags mono">
-                <s_tag_label_rep><a href="[##_tag_link_##]">#[##_tag_name_##]</a></s_tag_label_rep>
-              </div>
+              <div class="post-tags mono">[##_tag_label_rep_##]</div>
             </s_tag_label>
 
             <!-- 이전 / 다음 글
