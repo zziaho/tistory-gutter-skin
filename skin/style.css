@@ -556,6 +556,88 @@ html.is-post.has-toc body[data-show-cats="false"] .layout { grid-template-column
 }
 
 .comments { margin-top: 56px; padding-top: 28px; border-top: 1px solid var(--line-strong); }
+.guestbook { padding-top: 8px; }
+
+/* 티스토리가 React 로 렌더링하는 댓글·방명록 마크업(tt-*)에 스킨 톤을 입힙니다.
+   우리가 만든 DOM 이 아니라 플랫폼 소유이므로, 구조는 건드리지 않고 색·간격·
+   타이포만 덮어씁니다. 클래스가 바뀌면 스타일만 빠지고 기능은 남습니다. */
+
+/* 헤더 — "댓글 3" */
+.tt-box-total { margin-bottom: 20px; font-family: var(--font-mono); font-size: 12px; letter-spacing: .04em; }
+.tt-box-total .tt_txt_g { color: var(--fg-dim); text-transform: uppercase; }
+.tt-box-total .tt_num_g { margin-left: 6px; color: var(--accent); font-weight: 500; }
+
+/* 목록 */
+.tt-list-reply { margin: 0; padding: 0; list-style: none; }
+.tt-item-reply { padding: 18px 0; border-top: 1px solid var(--line); }
+.tt-list-reply > .tt-item-reply:first-child { border-top: 0; }
+.tt-wrap-cmt { display: flex; gap: 12px; align-items: flex-start; }
+
+/* 프로필 이미지 */
+.tt-box-thumb { flex: 0 0 auto; }
+.tt-thumbnail {
+  display: block; width: 34px; height: 34px; border-radius: 50%;
+  background-size: cover; background-position: center; background-color: var(--inline-bg);
+}
+.tt-box-content { flex: 1 1 auto; min-width: 0; }
+
+/* 작성자 · 날짜 — 메타는 모노스페이스 */
+.tt-box-meta { display: flex; align-items: center; gap: 6px; margin-bottom: 5px; }
+.tt-link-user, .tt_txt_user {
+  font-family: var(--font-mono); font-size: 12.5px; font-weight: 500;
+  color: var(--fg); text-decoration: none;
+}
+.tt-link-user:hover { color: var(--link); text-decoration: none; }
+.tt_date, .tt_cmt_info .tt_txt_g {
+  font-family: var(--font-mono); font-size: 11px; color: var(--fg-dim);
+}
+
+/* 본문 */
+.tt-wrap-desc { min-width: 0; }
+.tt_desc {
+  margin: 0; font-size: 14.5px; line-height: 1.75;
+  color: var(--fg-body); word-break: keep-all; overflow-wrap: anywhere;
+}
+
+/* 날짜 · 답글 링크 줄 */
+.tt-wrap-info { display: flex; align-items: center; gap: 10px; margin-top: 6px; }
+
+/* 답글 달기 · 수정 등 링크 */
+.tt-wrap-link-comment, .tt-link-comment {
+  font-family: var(--font-mono); font-size: 11px; color: var(--fg-dim);
+  text-decoration: none;
+}
+.tt-link-comment:hover { color: var(--link); text-decoration: none; }
+.tt-item-reply .tt-list-reply { margin-top: 14px; padding-left: 22px; border-left: 1px solid var(--line); }
+.tt-item-reply .tt-item-reply { padding: 12px 0; }
+
+/* 작성 폼 */
+.tt-area-write, .tt_wrap_write { margin-top: 22px; }
+.tt-box-textarea textarea, .tt_inp_g, .tt_form_pwd input {
+  width: 100%; box-sizing: border-box; padding: 11px 13px;
+  background: var(--surface); color: var(--fg);
+  border: 1px solid var(--line-strong); border-radius: var(--radius);
+  font-family: inherit; font-size: 14.5px; line-height: 1.7;
+}
+.tt-box-textarea textarea:focus, .tt_inp_g:focus, .tt_form_pwd input:focus {
+  outline: none; border-color: var(--link);
+}
+.tt-box-account { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+/* 이름·비밀번호는 짧은 입력이라 폭을 줄이고 한 줄에 나란히 둡니다.
+   위의 tt_inp_g 규칙이 width:100% 라 그대로 두면 각자 한 줄을 차지합니다. */
+.tt-box-account .tt_inp_g { width: auto; flex: 0 1 190px; }
+.tt_btn_submit, .tt-btn_register {
+  padding: 8px 16px; border: 1px solid var(--line-strong); border-radius: var(--radius);
+  background: var(--surface); color: var(--fg);
+  font-family: var(--font-mono); font-size: 12px; cursor: pointer;
+}
+.tt_btn_submit:hover, .tt-btn_register:hover { border-color: var(--link); color: var(--link); }
+
+@media (max-width: 768px) {
+  .tt-thumbnail { width: 30px; height: 30px; }
+  .tt_desc { font-size: 14px; }
+  .tt-item-reply .tt-list-reply { padding-left: 14px; }
+}
 
 /* ---------- 12. 푸터 ---------- */
 .site-footer { border-top: 1px solid var(--line); background: var(--surface); }

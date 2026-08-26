@@ -250,9 +250,14 @@
             </script>
           </article>
 
-          <section class="comments" id="comments">
-            [##_comment_group_##]
-          </section>
+          <!-- 댓글. [##_comment_group_##] 는 <s_rp> 그룹에 속한 값 치환자라
+               블록 밖에 두면 조용히 빈 문자열이 됩니다. 반드시 감싸야 합니다.
+               내부는 티스토리가 React 앱으로 렌더링하므로 tt-* 클래스에 스타일만 입힙니다. -->
+          <s_rp>
+            <section class="comments" id="comments">
+              [##_comment_group_##]
+            </section>
+          </s_rp>
         </s_permalink_article_rep>
 
       </s_article_rep>
@@ -279,7 +284,13 @@
       </s_article_protected>
 
       <!-- ========== 방명록 ========== -->
-      <div class="guestbook">[##_guestbook_group_##]</div>
+      <!-- 댓글과 같은 이유로 <s_guest> 래퍼가 필요합니다. -->
+      <s_guest>
+        <div class="guestbook">
+          <h1 class="list-title">Guestbook</h1>
+          [##_guestbook_group_##]
+        </div>
+      </s_guest>
 
       <!-- ========== 태그 클라우드 (/tag) ========== -->
       <s_tag>
