@@ -105,6 +105,13 @@
         var m = (pre.className || '').match(/(?:^|\s)(?:language-)?([a-z0-9#+]+)(?:\s|$)/i);
         lang = m ? m[1] : '';
       }
+      // 마크다운 모드는 <pre> 에 아무것도 안 붙이고 <code class="language-bash"> 로 변환합니다.
+      // 위에서 <pre> 만 보면 마크다운으로 쓴 글이 전부 평문으로 떨어집니다.
+      if (!lang) {
+        var langCode = pre.querySelector('code');
+        var cm = langCode && (langCode.className || '').match(/language-([a-z0-9#+]+)/i);
+        lang = cm ? cm[1] : '';
+      }
       lang = lang.toLowerCase();
       if (lang === 'plain' || lang === 'codeblock' || lang === 'hljs') lang = '';
 

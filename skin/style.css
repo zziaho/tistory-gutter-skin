@@ -316,6 +316,27 @@ html.is-post .auto-title { display: none; }
 .post-content > blockquote { max-width: var(--measure); }
 .post-content p { margin: 0 0 16px; }
 
+/* 티스토리는 본문 래퍼에 tt_article_useless_p_margin 을 붙이고, uselessPMargin.css 에서
+   !important 로 모든 <p> 의 위아래 여백을 0 으로 만듭니다. 위 규칙은 무조건 집니다.
+
+   기본 에디터로 쓴 글은 <p data-ke-size="size16">&nbsp;</p> 를 넣어 간격을 만들기 때문에
+   그 글에는 여백이 0 이어야 맞습니다. 되살리면 간격이 두 배로 벌어집니다.
+
+   반면 마크다운 모드 글은 문단마다 <p> 하나뿐이라 간격이 통째로 사라집니다.
+   두 종류는 data-ke-size 유무로 갈립니다. 마크다운 글의 <p> 에는 이 속성이 없습니다.
+   그래서 속성이 없는 <p> 만 골라 여백을 되돌립니다.
+
+   특이성 (0,4,1) 로 티스토리의 (0,1,1) !important 를 이깁니다. 둘 다 !important 이면
+   특이성이 높은 쪽이 이기므로, 로드 순서에 의존하지 않습니다.
+   .desc_g 는 티스토리가 넣는 빈 캡션 문단이라 제외합니다. */
+.post-content .tt_article_useless_p_margin p:not([data-ke-size]):not(.desc_g) {
+  margin-bottom: 16px !important;
+}
+/* 인용문 마지막 문단은 아래 여백을 두지 않습니다. 위 규칙보다 특이성이 (0,4,2) 로 높습니다. */
+.post-content .tt_article_useless_p_margin blockquote p:last-child:not([data-ke-size]) {
+  margin-bottom: 0 !important;
+}
+
 .post-content h2 {
   margin: 42px 0 16px;
   font-size: 23px; font-weight: 700; letter-spacing: -0.024em; color: var(--fg);
