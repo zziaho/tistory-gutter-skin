@@ -216,9 +216,12 @@
 
       var head = document.createElement('div');
       head.className = 'codeblock-head';
+      // aria-label 을 두지 않습니다. 보이는 글자가 'copy' 라 접근성 이름이
+      // 그것과 어긋나면 안 되고(WCAG 2.5.3), span 을 그대로 쓰면 'copied' 로
+      // 바뀔 때 이름도 같이 따라갑니다.
       head.innerHTML =
         '<span class="codeblock-lang">' + lang.toUpperCase() + '</span>' +
-        '<button type="button" class="codeblock-copy" aria-label="코드 복사">' +
+        '<button type="button" class="codeblock-copy">' +
         '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
         '<rect x="9" y="9" width="12" height="12" rx="2"></rect>' +
         '<path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>' +

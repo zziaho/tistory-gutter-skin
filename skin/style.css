@@ -569,6 +569,10 @@ html.is-post .auto-title { display: none; }
    (PostListinCategory). 플랫폼 소유라 구조는 못 바꾸고, 우리 표 규칙과
    브라우저 기본값이 섞여 어색해지므로 여기서 눌러 씁니다.
    본문 표 규칙(.post-content th/td 의 테두리)을 이기려면 선택자가 더 길어야 합니다. */
+/* 티스토리가 본문에 직접 끼워 넣는 블록입니다. 같이 주입되는
+   `.another_category_color_gray * { color: #909090 !important }` 가 색을 전부
+   덮어써서, 이 절의 color 만 !important 로 되받습니다. #909090 은 본문 배경에서
+   대비 3.05 라 AA 미달이기도 합니다. */
 .post-content .another_category {
   margin: 44px 0 0; padding: 24px 0 0;
   border: 0; background: none;
@@ -577,12 +581,12 @@ html.is-post .auto-title { display: none; }
 .post-content .another_category h4 {
   margin: 0 0 14px; padding: 0; border: 0;
   font-family: var(--font-mono); font-weight: 400;
-  font-size: 11px; letter-spacing: 0.09em; color: var(--fg-dim);
+  font-size: 11px; letter-spacing: 0.09em; color: var(--fg-dim) !important;
 }
 .post-content .another_category h4 a {
-  color: var(--fg-dim); text-decoration: none;
+  color: var(--fg-dim) !important; text-decoration: none;
 }
-.post-content .another_category h4 a:hover { color: var(--accent); }
+.post-content .another_category h4 a:hover { color: var(--accent) !important; }
 
 /* 폭을 100% 로 두면 날짜가 본문 오른쪽 끝까지 밀려 제목과 사이가 크게 벌어집니다.
    auto 로 두면 가장 긴 제목 기준으로 표가 줄어들어 날짜가 제목 뒤에 붙습니다. */
@@ -603,18 +607,18 @@ html.is-post .auto-title { display: none; }
   text-align: left; font-weight: 400;
 }
 .post-content .another_category th a {
-  font-size: 14.5px; color: var(--fg-body); text-decoration: none;
+  font-size: 14.5px; color: var(--fg-body) !important; text-decoration: none;
 }
-.post-content .another_category th a:hover { color: var(--link); }
+.post-content .another_category th a:hover { color: var(--link) !important; }
 /* 댓글 수 */
 .post-content .another_category th span {
-  font-family: var(--font-mono); font-size: 11px; color: var(--fg-dim);
+  font-family: var(--font-mono); font-size: 11px; color: var(--fg-dim) !important;
 }
 /* 날짜 — 모노스페이스로 오른쪽에 붙여 자릿수가 흔들리지 않게 합니다. */
 .post-content .another_category td {
   white-space: nowrap; text-align: right;
   padding-left: 28px;
-  font-family: var(--font-mono); font-size: 11.5px; color: var(--fg-dim);
+  font-family: var(--font-mono); font-size: 11.5px; color: var(--fg-dim) !important;
 }
 
 @media (max-width: 768px) {
