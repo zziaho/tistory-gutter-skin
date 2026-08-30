@@ -786,6 +786,16 @@ html.is-post .auto-title { display: none; }
    오히려 안 보입니다. 팔레트의 라이트값을 리터럴로 박아 둡니다. 대비 5.14. */
 .content-col .tt_box_namecard .tt_desc { color: #6b6960; }
 
+/* 다크 — 카드 배경 #f7f7f7 은 티스토리가 테마와 무관하게 박아 두는 값이라
+   어두운 페이지에서 밝은 덩어리 하나만 떠 보입니다. 배경을 먼저 되돌려야
+   글자색도 팔레트로 되돌릴 수 있습니다. 티스토리 쪽에 !important 가 없어
+   선택자 구체성만으로 이깁니다. 대비 --fg 13.74 / --fg-muted 5.21. */
+html.dark .content-col .tt_box_namecard { background-color: var(--surface); }
+html.dark .content-col .tt_box_namecard .tt_tit_cont { color: var(--fg); }
+html.dark .content-col .tt_box_namecard .tt_desc { color: var(--fg-muted); }
+html.dark .content-col .tt_box_namecard .tt_btn_subscribe { border-color: var(--line-strong); }
+html.dark .content-col .tt_box_namecard .tt_btn_subscribe .tt_txt_g { color: var(--fg); }
+
 /* ---------- 12. 푸터 ---------- */
 .site-footer { border-top: 1px solid var(--line); background: var(--surface); }
 .footer-inner {
