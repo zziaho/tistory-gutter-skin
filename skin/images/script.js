@@ -1,6 +1,7 @@
 /* ============================================================
    Gutter — 티스토리 스킨 스크립트
-   hljs 뒤에 defer 로 실행됩니다 (skin.html 의 로드 순서).
+   skin.html 에서 defer 로 실행됩니다.
+   highlight.js 는 정적으로 걸려 있지 않고 initCode 가 필요할 때만 불러옵니다.
    ============================================================ */
 (function () {
   'use strict';
@@ -86,6 +87,56 @@
   }
 
   /* ---------- 6. 코드블록 ---------- */
+  /* highlight.js 지연 로딩.
+     코드블록이 있는 페이지에서만, 실제로 쓰인 언어에 한해 내려받습니다.
+     hljs 기본 번들에 없는 언어(powershell, dart)는 코어가 준비된 뒤에
+     모듈을 추가로 받아야 하므로 두 단계로 나눕니다. */
+  var HLJS_VER  = '11.9.0';
+  var HLJS_BASE = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/' + HLJS_VER + '/';
+  var HLJS_EXTRA = { powershell: 1, dart: 1 };
+  var hljsState = 0; // 0 미요청, 1 로딩중, 2 완료
+  var hljsQueue = [];
+
+  function loadScript(src, cb) {
+    var el = document.createElement('script');
+    el.src = src;
+    el.onload  = function () { cb(); };
+    el.onerror = function () { cb(); }; // CDN 장애 시에도 나머지 진행을 막지 않습니다.
+    document.head.appendChild(el);
+  }
+
+  // langs 에서 추가 모듈이 필요한 언어만 골라 받은 뒤 done 을 부릅니다.
+  function loadHljsLangs(langs, done) {
+    var extras = [];
+    for (var i = 0; i < langs.length; i++) {
+      if (HLJS_EXTRA[langs[i]] && extras.indexOf(langs[i]) === -1) extras.push(langs[i]);
+    }
+    var left = extras.length;
+    if (!left) { done(); return; }
+    extras.forEach(function (lang) {
+      loadScript(HLJS_BASE + 'languages/' + lang + '.min.js', function () {
+        if (--left === 0) done();
+      });
+    });
+  }
+
+  function withHljs(langs, cb) {
+    if (hljsState === 2) { cb(); return; }
+    hljsQueue.push(cb);
+    if (hljsState === 1) return;
+    hljsState = 1;
+    loadScript(HLJS_BASE + 'highlight.min.js', function () {
+      // 코어가 안 왔으면 언어 모듈은 받지 않습니다.
+      // 모듈 파일은 전역 hljs 에 직접 registerLanguage 를 걸어서 코어 없이는 던집니다.
+      var next = window.hljs ? loadHljsLangs : function (l, done) { done(); };
+      next(langs, function () {
+        hljsState = 2;
+        var q = hljsQueue; hljsQueue = [];
+        q.forEach(function (fn) { fn(); });
+      });
+    });
+  }
+
   function initCode() {
     var content = $('[data-post-content]');
     if (!content) return;
@@ -94,6 +145,10 @@
     var lineOpt = document.body.getAttribute('data-line-numbers');
     var wantLines = !(lineOpt === '0' || lineOpt === 'false');
     var pres = $$('pre', content);
+    if (!pres.length) return;
+
+    // 하이라이팅 대기 목록. hljs 로딩은 래핑을 전부 끝낸 뒤 한 번만 겁니다.
+    var pending = [];
 
     pres.forEach(function (pre) {
       if (pre.closest('.codeblock')) return;
@@ -137,9 +192,8 @@
 
       // 언어가 지정된 블록만 하이라이팅합니다.
       // 자동 감지를 걸면 평문(콘솔 출력, 로그, 메모)에 엉뚱한 키워드 색이 입혀집니다.
-      if (lang && window.hljs) {
-        try { window.hljs.highlightElement(code); } catch (e) {}
-      }
+      // hljs 가 아직 없으므로 여기서는 모아만 두고, 래핑이 끝난 뒤 한 번에 처리합니다.
+      if (lang) pending.push({ code: code, lang: lang });
 
       // 래핑
       var block = document.createElement('div');
@@ -205,6 +259,18 @@
           try { document.execCommand('copy'); done(); } catch (e) {}
           document.body.removeChild(ta);
         }
+      });
+    });
+
+    // 언어가 지정된 블록이 하나도 없으면 hljs 를 받지 않습니다.
+    // 평문 블록만 있는 글에서 코어를 통째로 내려받던 낭비가 사라집니다.
+    if (!pending.length) return;
+
+    var langs = pending.map(function (p) { return p.lang; });
+    withHljs(langs, function () {
+      if (!window.hljs) return;
+      pending.forEach(function (p) {
+        try { window.hljs.highlightElement(p.code); } catch (e) {}
       });
     });
   }

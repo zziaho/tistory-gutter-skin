@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
 
   <!-- 폰트: static 전체 패밀리 대신 가변 + 동적 서브셋. 등록 폰트 수가 46 -> 1 로 줄어 CLS 원인이 사라집니다. -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
@@ -367,10 +368,11 @@
 }
 </script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" defer></script>
-<!-- 기본 번들(36개 언어)에 없는 언어는 모듈을 따로 불러야 합니다. defer 는 문서 순서대로 실행되므로 코어 다음에 둡니다. -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/powershell.min.js" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dart.min.js" defer></script>
+<!-- highlight.js 는 여기서 부르지 않습니다.
+     코드블록이 없는 페이지(홈·목록·카테고리·검색·태그·방명록)가 대부분인데
+     여기 두면 그 페이지들도 코어 + 언어 모듈을 전부 내려받습니다.
+     script.js 의 initCode 가 코드블록을 찾은 뒤에만, 실제로 쓰인 언어에 한해
+     동적으로 불러옵니다. 하이라이팅 테마는 style.css 안에 있어 외부 CSS 가 없습니다. -->
 <script src="./images/script.js" defer></script>
 
 <!-- 티스토리 공통 스크립트 (필수) -->
