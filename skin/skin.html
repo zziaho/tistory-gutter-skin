@@ -10,9 +10,19 @@
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
   <link rel="preconnect" href="https://cdnjs.cloudflare.com">
 
-  <!-- 폰트: static 전체 패밀리 대신 가변 + 동적 서브셋. 등록 폰트 수가 46 -> 1 로 줄어 CLS 원인이 사라집니다. -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <!-- 폰트: static 전체 패밀리 대신 가변 + 동적 서브셋. 등록 폰트 수가 46 -> 1 로 줄어 CLS 원인이 사라집니다.
+
+       두 스타일시트 모두 rel="preload" 로 받아 onload 에서 rel 을 바꿔 답니다.
+       그냥 rel="stylesheet" 로 두면 렌더를 막습니다. 실측(Lighthouse, 데스크톱)에서
+       JetBrains Mono 364ms + Pretendard 298ms 였습니다. 폰트는 본문 글자를 그리는 데
+       필수가 아니고 두 @font-face 모두 swap 이라, 막지 않아도 결과는 같고 첫 페인트만
+       앞당겨집니다. JS 가 꺼진 환경은 noscript 사본이 받습니다. -->
+  <link rel="preload" as="style" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap">
+  </noscript>
 
   <link rel="stylesheet" href="./style.css">
 
