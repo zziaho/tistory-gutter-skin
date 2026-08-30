@@ -777,6 +777,15 @@ html.is-post .auto-title { display: none; }
   .tt-item-reply .tt-list-reply { padding-left: 14px; }
 }
 
+/* 프로필 카드 — 티스토리가 글과 댓글 사이에 React 로 끼워 넣습니다.
+   `.tt_box_namecard .tt_desc { color:#888 }` 이 배경 #f7f7f7 에서 대비 3.31 로
+   AA 미달입니다. 티스토리 쪽에 !important 가 없어 선택자만 한 단계 더
+   구체적으로 두면 이깁니다.
+   카드 배경 #f7f7f7 은 티스토리가 테마와 무관하게 고정해 둡니다. 그래서
+   var(--fg-muted) 를 쓰면 다크에서 밝은 글자가 밝은 카드 위에 올라가
+   오히려 안 보입니다. 팔레트의 라이트값을 리터럴로 박아 둡니다. 대비 5.14. */
+.content-col .tt_box_namecard .tt_desc { color: #6b6960; }
+
 /* ---------- 12. 푸터 ---------- */
 .site-footer { border-top: 1px solid var(--line); background: var(--surface); }
 .footer-inner {

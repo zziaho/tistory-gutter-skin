@@ -443,6 +443,32 @@
     });
   }
 
+  /* 프로필 카드. 티스토리가 React 로 나중에 채워 넣는 자리라 boot 시점에는
+     껍데기만 있습니다. 썸네일 링크가 배경 이미지 span 하나만 감싸고 있어
+     접근 가능한 이름이 없으므로(Lighthouse link-name), 카드가 들어오는 것을
+     보고 이름을 달아 줍니다. */
+  function initNamecard() {
+    var host = $('[data-tistory-react-app="Namecard"]');
+    if (!host || !window.MutationObserver) return;
+
+    var label = function () {
+      var a = $('.tt_wrap_thumb', host);
+      if (!a) return false;
+      if (!a.getAttribute('aria-label')) {
+        var tit = $('.tt_tit_cont', host);
+        var name = tit ? (tit.textContent || '').trim() : '';
+        a.setAttribute('aria-label', (name || '블로그') + ' 프로필');
+      }
+      return true;
+    };
+
+    if (label()) return;
+    var mo = new MutationObserver(function () { if (label()) mo.disconnect(); });
+    mo.observe(host, { childList: true, subtree: true });
+    // 카드가 끝내 안 들어오는 경우를 대비해 관찰을 놓아 줍니다.
+    setTimeout(function () { mo.disconnect(); }, 10000);
+  }
+
   /* ---------- 실행 ---------- */
   function boot() {
     initTheme();
@@ -456,6 +482,7 @@
     initLightbox();
     initTables();
     initTags();
+    initNamecard();
     initYear();
   }
 
