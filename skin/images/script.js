@@ -337,14 +337,50 @@
     }, { rootMargin: '-88px 0px -70% 0px', threshold: 0 });
     heads.forEach(function (h) { io.observe(h); });
 
-    // 모바일: 라벨 눌러 접기
+    /* 좁은 화면에서는 목차가 사이드바가 아니라 본문 위 상자가 됩니다(CSS 900px 분기).
+       펼친 채로 두면 긴 글에서 목차만 1000px 가까이 되어 제목까지 스크롤해야
+       합니다. 그래서 접은 상태로 시작하고, 라벨을 눌러 펴게 합니다.
+       이때 라벨이 목차를 여는 유일한 수단이 되므로 키보드로도 닿아야 합니다. */
     var label = $('.rail-label', rail);
-    if (label) {
-      label.addEventListener('click', function () {
-        if (rail.hasAttribute('data-collapsed')) rail.removeAttribute('data-collapsed');
-        else rail.setAttribute('data-collapsed', '');
-      });
-    }
+    if (!label) return;
+
+    var mq = window.matchMedia ? window.matchMedia('(max-width: 900px)') : null;
+    var collapsed = function (on) {
+      if (on) rail.setAttribute('data-collapsed', '');
+      else rail.removeAttribute('data-collapsed');
+      if (label.getAttribute('role') === 'button') {
+        label.setAttribute('aria-expanded', on ? 'false' : 'true');
+      }
+    };
+
+    var narrowed = false;
+    var applyMode = function () {
+      var narrow = !!(mq && mq.matches);
+      if (narrow === narrowed) return;
+      narrowed = narrow;
+      if (narrow) {
+        label.setAttribute('role', 'button');
+        label.setAttribute('tabindex', '0');
+        collapsed(true);
+      } else {
+        // 넓은 화면에는 접기 UI 가 없습니다. 흔적을 지워 스크린리더가
+        // 누를 수 없는 버튼을 읽지 않게 합니다.
+        label.removeAttribute('role');
+        label.removeAttribute('tabindex');
+        label.removeAttribute('aria-expanded');
+        collapsed(false);
+      }
+    };
+    applyMode();
+    if (mq && mq.addEventListener) mq.addEventListener('change', applyMode);
+
+    var toggle = function () { collapsed(!rail.hasAttribute('data-collapsed')); };
+    label.addEventListener('click', toggle);
+    label.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
+        e.preventDefault(); toggle();
+      }
+    });
   }
 
   /* ---------- 8. 카테고리 글 수 ----------
