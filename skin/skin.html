@@ -217,6 +217,20 @@
               })();
             </script>
 
+            <!-- 본문 하단 광고. 글을 다 읽은 자리라 본문을 끊지 않습니다.
+                 상단 유닛과 같은 고정 크기를 써서 도착 전에도 자리를 잡아둡니다(CLS 0).
+                 태그·이전다음글보다 위에 둡니다. 아래에 두면 티스토리가 주입하는
+                 '카테고리의 다른 글' 과 겹쳐 문서 끝이 광고 두 덩어리가 됩니다. -->
+            <s_if_var_adsense_slot_bottom>
+            <div class="ad-slot ad-slot-bottom">
+              <ins class="adsbygoogle ad-inarticle"
+                   style="display:inline-block"
+                   data-ad-client="[##_var_adsense_client_##]"
+                   data-ad-slot="[##_var_adsense_slot_bottom_##]"></ins>
+              <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+            </div>
+            </s_if_var_adsense_slot_bottom>
+
             <!-- 태그. 반복 블록이 아니라 값 치환자 하나가 태그 목록 전체를
                  <a> 링크 + 쉼표 형태로 출력합니다. s_tag_label_rep 이나
                  [##_tag_name_##] 은 태그 클라우드용이라 여기서는 빈 값이 됩니다.

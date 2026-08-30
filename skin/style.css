@@ -785,6 +785,8 @@ ins.adsbygoogle:not(.ad-inarticle) {
    크기를 CSS 가 정하므로 광고가 늦게 와도 레이아웃이 움직이지 않습니다.
    336x280 / 300x250 은 애드센스 표준 규격이라 채움률이 좋습니다. */
 .ad-slot { margin: 34px 0; text-align: center; }
+/* 하단 유닛은 본문이 끝난 자리라 위쪽 간격을 더 둡니다. */
+.ad-slot-bottom { margin-top: 46px; }
 .ad-inarticle { width: 336px; height: 280px; contain: layout; }
 
 /* ---------- 14. 반응형 ---------- */

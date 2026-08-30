@@ -123,10 +123,18 @@
 
     <variable>
       <name>adsense_slot</name>
-      <label>애드센스 본문 광고 슬롯 ID</label>
+      <label>애드센스 본문 상단 광고 슬롯 ID</label>
       <type>STRING</type>
       <default></default>
-      <description>글 본문 상단에 넣을 광고 유닛의 슬롯 번호. 비워두면 넣지 않습니다.</description>
+      <description>글 본문 위에 넣을 광고 유닛의 슬롯 번호. 비워두면 넣지 않습니다.</description>
+    </variable>
+
+    <variable>
+      <name>adsense_slot_bottom</name>
+      <label>애드센스 본문 하단 광고 슬롯 ID</label>
+      <type>STRING</type>
+      <default></default>
+      <description>글을 다 읽은 자리에 넣을 광고 유닛의 슬롯 번호. 비워두면 넣지 않습니다. 상단과 다른 유닛을 쓰는 편이 성과 확인에 낫습니다.</description>
     </variable>
   </variables>
 </skin>
