@@ -15,14 +15,23 @@
   --fg:         #1b1c21;
   --fg-body:    #33353b;
   --fg-muted:   #6b6960;
-  --fg-dim:     #bdb9ac;
+  --fg-dim:     #746e5c;
 
-  /* 문법 팔레트 (One Light 계열) — accent / link 는 스킨 옵션이 덮어씁니다 */
-  --accent:     #a626a4;   /* keyword  · 카테고리 */
-  --link:       #4078f2;   /* function · 링크 */
-  --syn-string: #50a14f;
-  --syn-type:   #c18401;
-  --syn-comment:#a0a1a7;
+  /* 사이트 색. accent / link 는 스킨 옵션이 덮어씁니다. */
+  --accent:     #a626a4;   /* 카테고리 */
+  --link:       #2364f0;   /* 링크 */
+
+  /* 문법 팔레트 (One Light 계열).
+     사이트 색과 분리해 둡니다. 코드 안의 색까지 스킨 옵션에 묶으면 사용자가
+     accent 를 밝은 색으로 바꿨을 때 코드가 읽히지 않습니다. 방향은 원래
+     '문법 팔레트에서 사이트 색을 가져온다' 였지 그 반대가 아니었습니다.
+     명도는 본문·코드 배경 전부에서 4.5:1 을 넘도록 One Light 원색에서 낮췄습니다. */
+  --syn-keyword:#a626a4;
+  --syn-func:   #2364f0;
+  --syn-string: #3e7c3d;
+  --syn-type:   #946501;
+  --syn-comment:#6d6e76;
+  --syn-delete: #d82f20;
   --syn-fg:     #383a42;
 
   /* 코드블록 */
@@ -30,7 +39,7 @@
   --code-head:  #f5f5f7;
   --code-line:  #e9eaee;
   --code-gutter-bg: #f7f7f9;
-  --code-gutter-fg: #c6c7cc;
+  --code-gutter-fg: #6c6e79;
 
   --inline-bg:  #f6f5f1;
 
@@ -51,20 +60,24 @@ html.dark {
   --fg:         #e6e8ec;
   --fg-body:    #c2c6ce;
   --fg-muted:   #8b8f9a;
-  --fg-dim:     #5c6068;
+  --fg-dim:     #8a8f98;
 
   --accent:     #c678dd;
   --link:       #61afef;
+
+  --syn-keyword:#c678dd;
+  --syn-func:   #61afef;
   --syn-string: #98c379;
   --syn-type:   #e5c07b;
-  --syn-comment:#7f8796;
+  --syn-comment:#888f9d;
+  --syn-delete: #e45649;
   --syn-fg:     #d5d9e0;
 
   --code-bg:    #11131a;
   --code-head:  #1b1e24;
   --code-line:  #2a2e37;
   --code-gutter-bg: #15181e;
-  --code-gutter-fg: #454b56;
+  --code-gutter-fg: #878f9f;
 
   --inline-bg:  #24262c;
 }
@@ -531,15 +544,15 @@ html.is-post .auto-title { display: none; }
 
 /* highlight.js 토큰 — 테마 CSS 를 따로 받지 않고 여기서 정의합니다.
    서드파티 렌더 차단 스타일시트가 하나 줄어듭니다. */
-.hljs-keyword, .hljs-built_in, .hljs-literal, .hljs-selector-tag { color: var(--accent); }
-.hljs-title, .hljs-title.function_, .hljs-section, .hljs-name { color: var(--link); }
+.hljs-keyword, .hljs-built_in, .hljs-literal, .hljs-selector-tag { color: var(--syn-keyword); }
+.hljs-title, .hljs-title.function_, .hljs-section, .hljs-name { color: var(--syn-func); }
 .hljs-string, .hljs-regexp, .hljs-addition { color: var(--syn-string); }
 .hljs-type, .hljs-class .hljs-title, .hljs-title.class_, .hljs-attr,
 .hljs-attribute, .hljs-number, .hljs-symbol { color: var(--syn-type); }
 .hljs-comment, .hljs-quote { color: var(--syn-comment); font-style: italic; }
-.hljs-meta { color: var(--link); }
+.hljs-meta { color: var(--syn-func); }
 .hljs-variable, .hljs-template-variable, .hljs-params { color: var(--syn-fg); }
-.hljs-deletion { color: #e45649; }
+.hljs-deletion { color: var(--syn-delete); }
 .hljs-emphasis { font-style: italic; }
 .hljs-strong { font-weight: 600; }
 

@@ -46,15 +46,15 @@
       <label>강조 색상 (카테고리)</label>
       <type>COLOR</type>
       <default>#a626a4</default>
-      <description>카테고리와 경로에 쓰는 강조 색상</description>
+      <description>카테고리와 경로에 쓰는 강조 색상. 바꿀 때는 흰 배경에서 대비 4.5:1 을 넘는지 확인하세요. 코드블록 안의 색은 이 옵션을 따르지 않으므로 영향받지 않습니다.</description>
     </variable>
 
     <variable>
       <name>link_color</name>
       <label>링크 색상</label>
       <type>COLOR</type>
-      <default>#4078f2</default>
-      <description>본문 링크와 활성 항목 색상</description>
+      <default>#2364f0</default>
+      <description>본문 링크와 활성 항목 색상. 바꿀 때는 흰 배경에서 대비 4.5:1 을 넘는지 확인하세요.</description>
     </variable>
 
     <variable>
