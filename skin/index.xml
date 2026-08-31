@@ -2,7 +2,7 @@
 <skin>
   <information>
     <name><![CDATA[Gutter]]></name>
-    <version><![CDATA[0.1.0]]></version>
+    <version><![CDATA[1.0.0]]></version>
     <description><![CDATA[개발 블로그용 티스토리 스킨 — 문법 강조 팔레트, 코드블록 라인 넘버 거터, 다크모드]]></description>
     <license><![CDATA[MIT License]]></license>
   </information>

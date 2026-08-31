@@ -6,6 +6,7 @@
 
 코드 라인 넘버 거터 | 문법 강조 팔레트 | 다크모드 | 자동 목차 | 댓글·방명록
 
+[![Version](https://img.shields.io/badge/version-1.0.0-2364f0.svg)](https://github.com/zziaho/tistory-gutter-skin/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-a626a4.svg)](LICENSE)
 [![Platform: Tistory](https://img.shields.io/badge/Platform-Tistory-FF5A4A.svg)](https://www.tistory.com/)
 
