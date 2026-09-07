@@ -867,6 +867,19 @@ html.dark .tt-comment-cont .tt-comment-highlight { background-color: rgba(198, 1
   background-color: var(--surface); color: var(--fg); border-color: var(--line-strong);
 }
 .tt-comment-cont .tt_form_pwd .tt_inp_g:focus { border-color: var(--link); }
+/* 확인 버튼. 플랫폼 버그를 우회합니다. index.css 안에 `.tt_ico_check` 정의가 두
+   개 있고 나중 규칙이 이겨서, 스프라이트의 흰 체크(-11px -40px) 대신 어두운
+   체크(#333, -82px -60px)를 씁니다. 그런데 버튼 배경은 #000 로 박혀 있어
+   대비 1.4:1 로 체크가 묻힙니다. 배경색이 테마와 무관하게 고정이라 라이트에서도
+   똑같이 안 보입니다.
+   글리프 색은 외부 SVG 라 못 바꾸니, 배경을 --fg 로 두어 항상 페이지의 반대편에
+   놓고 글리프는 밝은 배경일 때만 반전시킵니다. 라이트는 어두운 배경 + 반전된
+   밝은 체크, 다크는 밝은 배경 + 원본 어두운 체크로 양쪽 다 9.5:1 입니다.
+   폭·높이·모서리는 플랫폼 값을 그대로 둡니다. */
+.tt-comment-cont .tt_form_pwd .tt_btn_submit { background-color: var(--fg); }
+.tt-comment-cont .tt_form_pwd .tt_btn_submit[disabled] { background-color: var(--fg-muted); }
+.tt-comment-cont .tt_form_pwd .tt_btn_submit .tt_ico_check { filter: invert(1); }
+html.dark .tt-comment-cont .tt_form_pwd .tt_btn_submit .tt_ico_check { filter: none; }
 
 /* 프로필 카드 — 티스토리가 글과 댓글 사이에 React 로 끼워 넣습니다.
    `.tt_box_namecard .tt_desc { color:#888 }` 이 배경 #f7f7f7 에서 대비 3.31 로
