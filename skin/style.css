@@ -735,6 +735,15 @@ html.is-post .auto-title { display: none; }
   border-bottom-color: var(--line-strong); border-left-color: var(--line-strong);
 }
 
+/* "이전 댓글 더보기" — 목록 안 전체 폭 버튼인데 배경이 #fff 로 박혀 있어
+   다크에서 흰 띠가 됩니다. */
+.tt-comment-cont .tt_btn_prev_more {
+  background-color: transparent; color: var(--fg-dim); border-top-color: var(--line);
+  font-family: var(--font-mono); font-size: 12px;
+}
+/* 답글·수정 폼의 취소 버튼. #949494 는 라이트에서 대비 2.9:1 로 AA 미달입니다. */
+.tt-comment-cont .tt-btn-cancel { color: var(--fg-dim); }
+
 /* 프로필 이미지 — 플랫폼이 :after 로 흰 배경을 가정한 링과 그림자를 얹습니다. */
 .tt-comment-cont .tt-thumbnail { background-color: var(--inline-bg); }
 .tt-comment-cont .tt-thumbnail::after { border-color: var(--line-strong); box-shadow: none; }
@@ -756,8 +765,10 @@ html.is-post .auto-title { display: none; }
 .tt-comment-cont .tt_item_modify .tt_desc,
 .tt-comment-cont .tt_item_modify .tt_desc_more,
 .tt-comment-cont .tt_item_secret > .tt-wrap-cmt .tt_desc { color: var(--fg-muted); }
-/* @멘션 */
+/* @멘션 — 배경은 요소가 아니라 :before 밴드(높이 21px)로 그려집니다. 요소
+   배경만 바꾸면 밴드가 위아래로 삐져나와 밝은 테두리처럼 보입니다. */
 .tt-comment-cont .tt-txt-mention { color: var(--fg); background-color: var(--inline-bg); }
+.tt-comment-cont .tt-txt-mention::before { background-color: var(--inline-bg); }
 /* 신고 등으로 제한된 댓글 — 플랫폼은 브랜드 주황(#ff5a4a)을 씁니다. */
 .tt-comment-cont .tt-wrap-cmt .tt-wrap-desc .tt_emph { color: var(--syn-delete); }
 
@@ -810,6 +821,12 @@ html.dark .tt-comment-cont .tt-wrap-cmt .tt-box-modify.tt-box-modify-open .tt-bu
 .tt-comment-cont .tt-box-textarea.tt-input-textarea .tt-inner-g { border-color: var(--link); }
 .tt-comment-cont .tt-box-textarea textarea,
 .tt-comment-cont .tt-box-textarea div { color: var(--fg); }
+/* 로그인 전용 댓글 등 일부 상태에서는 .tt-cmt 대신 진짜 textarea 가 나옵니다.
+   플랫폼이 배경을 지정하지 않아 브라우저 기본 흰색이 그대로 보이므로 투명으로
+   되돌려 바깥 .tt-inner-g 의 배경이 비치게 합니다. */
+.tt-comment-cont .tt-box-textarea textarea { background: transparent; }
+.tt-comment-cont .tt-box-textarea textarea::placeholder,
+.tt-comment-cont .tt-box-textarea div::placeholder { color: var(--fg-dim); }
 .tt-comment-cont .tt-box-textarea .tt_txt_user { color: var(--fg); }
 .tt-comment-cont .tt-box-textarea .tt-cmt[contenteditable="true"]:empty::before { color: var(--fg-dim); }
 .tt-comment-cont .tt-area-write .tt-box-account input {
@@ -834,6 +851,12 @@ html.dark .tt-comment-cont .tt-wrap-cmt .tt-box-modify.tt-box-modify-open .tt-bu
 .tt-comment-cont .tt-btn_register:disabled {
   background-color: transparent; border-color: var(--line); color: var(--fg-dim);
 }
+
+/* 댓글 퍼머링크로 들어오면 해당 댓글이 #ff4 로 세 번 반짝입니다(blink 애니메이션이
+   transparent 로 빠짐). 다크에서는 밝은 본문 글자가 노란 배경에 올라가 1.7:1 이
+   되므로 반짝임 색만 --accent 계열 반투명으로 바꿉니다. rgba 는 var() 를 못 받아
+   다크 팔레트의 --accent(#c678dd) 를 리터럴로 씁니다. */
+html.dark .tt-comment-cont .tt-comment-highlight { background-color: rgba(198, 120, 221, .28); }
 
 /* 비밀 댓글 열람 폼 — 팝업이 280px 고정이고 그 안에서 입력 200px + 버튼 40px 이
    딱 맞습니다. fieldset 기본 padding·margin 이 남아 있으면 폭이 모자라 버튼이
