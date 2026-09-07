@@ -4,7 +4,7 @@
 
 **개발 블로그를 위한 티스토리 스킨**
 
-[![Version](https://img.shields.io/badge/version-1.0.0-2364f0.svg)](https://github.com/zziaho/tistory-gutter-skin/releases)
+[![Version](https://img.shields.io/badge/version-1.0.1-2364f0.svg)](https://github.com/zziaho/tistory-gutter-skin/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-a626a4.svg)](LICENSE)
 [![Platform: Tistory](https://img.shields.io/badge/Platform-Tistory-FF5A4A.svg)](https://www.tistory.com/)
 
@@ -158,7 +158,7 @@ Vanilla ES5 IIFE, 레이아웃은 CSS Grid 입니다.
   블록이 늦게 나타나는 별도 원인은 티스토리가 `.post-content` 에 인라인 높이를
   넣는 쪽이라 스킨에서 손댈 수 없습니다.
 
-- **검증 범위.** 1.0.0 은 블로그 한 곳에서 검증했습니다. 다른 블로그의 글
+- **검증 범위.** 1.0.1 은 블로그 한 곳에서 검증했습니다. 다른 블로그의 글
   마크업·플러그인·카테고리 구조에서 겹치는 문제가 있을 수 있습니다.
 
 ---
