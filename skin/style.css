@@ -696,86 +696,154 @@ html.is-post .auto-title { display: none; }
 .comments { margin-top: 56px; padding-top: 28px; border-top: 1px solid var(--line-strong); }
 .guestbook { padding-top: 8px; }
 
-/* 티스토리가 React 로 렌더링하는 댓글·방명록 마크업(tt-*)에 스킨 톤을 입힙니다.
-   우리가 만든 DOM 이 아니라 플랫폼 소유이므로, 구조는 건드리지 않고 색·간격·
-   타이포만 덮어씁니다. 클래스가 바뀌면 스타일만 빠지고 기능은 남습니다. */
+/* 티스토리가 React 로 렌더링하는 댓글·방명록에 스킨 톤을 입힙니다.
+   [##_comment_group_##] 와 [##_guestbook_group_##] 는 같은 앱이라 둘 다
+   `<div class="tt-comment-cont">` 를 루트로 씁니다. 우리가 만든 DOM 이 아니므로
+   구조와 박스모델은 손대지 않고 색·테두리·타이포만 덮어씁니다.
+
+   구체성 주의. 플랫폼 CSS(userblog/.../pc/dist/index.css)는 색을
+   `.tt-wrap-cmt .tt_desc { color:#222 }` 처럼 두 단 선택자에 박아 둡니다.
+   스킨 style.css 가 뒤에 실려도 한 단짜리 `.tt_desc` 로는 못 이겨서, 다크에서
+   `#222` 가 그대로 남아 이름과 본문이 대비 1.15:1 로 안 보였습니다. 그래서 아래
+   규칙은 루트 `.tt-comment-cont` 를 앞에 붙여 한 단 위에서 이깁니다.
+   !important 는 쓰지 않습니다.
+
+   박스모델도 건드리지 않습니다. 플랫폼이 `.tt-box-content` 를
+   width:calc(100% - 60px) 로 고정해 두는데(썸네일 44px + margin 16px), 여기에
+   `.tt-wrap-cmt { gap:12px }` 를 얹으면 60 + 12 + (100% - 60) 가 한 줄을 넘겨
+   플랫폼의 flex-wrap:wrap 이 걸리고 프로필 아래로 본문이 쌓입니다. 같은 이유로
+   썸네일 크기도 그대로 둡니다. 대댓글 인덴트 역시 플랫폼이
+   `.tt-list-reply-comment .tt-item-reply { padding-left:60px }` + ㄴ 코너
+   마커로 처리하므로 따로 넣지 않습니다.
+
+   클래스가 바뀌면 스타일만 빠지고 기능은 남습니다. */
 
 /* 헤더 — "댓글 3" */
-.tt-box-total { margin-bottom: 20px; font-family: var(--font-mono); font-size: 12px; letter-spacing: .04em; }
-.tt-box-total .tt_txt_g { color: var(--fg-dim); text-transform: uppercase; }
-.tt-box-total .tt_num_g { margin-left: 6px; color: var(--accent); font-weight: 500; }
-
-/* 목록 */
-.tt-list-reply { margin: 0; padding: 0; list-style: none; }
-.tt-item-reply { padding: 18px 0; border-top: 1px solid var(--line); }
-.tt-list-reply > .tt-item-reply:first-child { border-top: 0; }
-.tt-wrap-cmt { display: flex; gap: 12px; align-items: flex-start; }
-
-/* 프로필 이미지 */
-.tt-box-thumb { flex: 0 0 auto; }
-.tt-thumbnail {
-  display: block; width: 34px; height: 34px; border-radius: 50%;
-  background-size: cover; background-position: center; background-color: var(--inline-bg);
+.tt-comment-cont .tt-box-total { border-bottom-color: var(--line); }
+.tt-comment-cont .tt-box-total .tt_txt_g {
+  font-family: var(--font-mono); font-size: 13px; letter-spacing: .04em; color: var(--fg-dim);
 }
-.tt-box-content { flex: 1 1 auto; min-width: 0; }
-
-/* 작성자 · 날짜 — 메타는 모노스페이스 */
-.tt-box-meta { display: flex; align-items: center; gap: 6px; margin-bottom: 5px; }
-.tt-link-user, .tt_txt_user {
-  font-family: var(--font-mono); font-size: 12.5px; font-weight: 500;
-  color: var(--fg); text-decoration: none;
-}
-.tt-link-user:hover { color: var(--link); text-decoration: none; }
-.tt_date, .tt_cmt_info .tt_txt_g {
-  font-family: var(--font-mono); font-size: 11px; color: var(--fg-dim);
+.tt-comment-cont .tt-box-total .tt_num_g {
+  font-family: var(--font-mono); font-size: 13px; color: var(--accent);
 }
 
-/* 본문 */
-.tt-wrap-desc { min-width: 0; }
-.tt_desc {
-  margin: 0; font-size: 14.5px; line-height: 1.75;
-  color: var(--fg-body); word-break: keep-all; overflow-wrap: anywhere;
+/* 구분선 — 플랫폼은 #f5f5f5 / #e2e2e2 로 라이트 전용입니다. */
+.tt-comment-cont .tt-list-reply { border-bottom-color: var(--line); }
+.tt-comment-cont .tt-item-reply { border-top-color: var(--line); }
+.tt-comment-cont .tt-item-reply .tt-list-reply-comment { border-top-color: var(--line); }
+.tt-comment-cont .tt-list-reply-comment .tt-item-reply::before {
+  border-bottom-color: var(--line-strong); border-left-color: var(--line-strong);
 }
 
-/* 날짜 · 답글 링크 줄 */
-.tt-wrap-info { display: flex; align-items: center; gap: 10px; margin-top: 6px; }
+/* 프로필 이미지 — 플랫폼이 :after 로 흰 배경을 가정한 링과 그림자를 얹습니다. */
+.tt-comment-cont .tt-thumbnail { background-color: var(--inline-bg); }
+.tt-comment-cont .tt-thumbnail::after { border-color: var(--line-strong); box-shadow: none; }
 
-/* 답글 달기 · 수정 등 링크 */
-.tt-wrap-link-comment, .tt-link-comment {
-  font-family: var(--font-mono); font-size: 11px; color: var(--fg-dim);
-  text-decoration: none;
+/* 작성자 — 메타는 모노스페이스 */
+.tt-comment-cont .tt-wrap-cmt .tt-link-user {
+  font-family: var(--font-mono); font-size: 13.5px; color: var(--fg);
 }
-.tt-link-comment:hover { color: var(--link); text-decoration: none; }
-.tt-item-reply .tt-list-reply { margin-top: 14px; padding-left: 22px; border-left: 1px solid var(--line); }
-.tt-item-reply .tt-item-reply { padding: 12px 0; }
+.tt-comment-cont .tt-wrap-cmt .tt-link-user:hover { color: var(--link); }
 
-/* 작성 폼 */
-.tt-area-write, .tt_wrap_write { margin-top: 22px; }
-.tt-box-textarea textarea, .tt_inp_g, .tt_form_pwd input {
-  width: 100%; box-sizing: border-box; padding: 11px 13px;
+/* 본문 — 플랫폼의 word-break:break-all 은 한글·영문 혼용에서 단어를 잘라
+   먹습니다. keep-all + anywhere 로 바꿉니다. */
+.tt-comment-cont .tt-wrap-cmt .tt_desc {
+  color: var(--fg-body); line-height: 1.65;
+  word-break: keep-all; overflow-wrap: anywhere;
+}
+.tt-comment-cont .tt_desc_more { color: var(--link); }
+/* 수정 중 · 비밀 댓글의 흐린 본문 */
+.tt-comment-cont .tt_item_modify .tt_desc,
+.tt-comment-cont .tt_item_modify .tt_desc_more,
+.tt-comment-cont .tt_item_secret > .tt-wrap-cmt .tt_desc { color: var(--fg-muted); }
+/* @멘션 */
+.tt-comment-cont .tt-txt-mention { color: var(--fg); background-color: var(--inline-bg); }
+/* 신고 등으로 제한된 댓글 — 플랫폼은 브랜드 주황(#ff5a4a)을 씁니다. */
+.tt-comment-cont .tt-wrap-cmt .tt-wrap-desc .tt_emph { color: var(--syn-delete); }
+
+/* 날짜 · 답글 · 상태 배지 */
+.tt-comment-cont .tt-wrap-cmt .tt_date { font-family: var(--font-mono); color: var(--fg-dim); }
+.tt-comment-cont .tt-link-comment .tt_txt_g,
+.tt-comment-cont .tt-link-comment .tt_num_g { color: var(--fg-dim); }
+.tt-comment-cont .tt-link-comment:hover .tt_txt_g,
+.tt-comment-cont .tt-link-comment:hover .tt_num_g { color: var(--link); }
+.tt-comment-cont .tt-wrap-info .tt_date + .tt-wrap-link-comment::before {
+  background-color: var(--line-strong);
+}
+.tt-comment-cont .tt-item-reply .tt_cmt_info .tt_txt_g { color: var(--fg-dim); }
+
+/* ⋮ 메뉴 · 비밀번호 팝업 — 플랫폼이 배경 #fff, 글자 #222 로 고정해 둡니다. */
+.tt-comment-cont .tt-wrap-cmt .tt-button-modify:hover,
+.tt-comment-cont .tt-wrap-cmt .tt-box-modify.tt-box-modify-open .tt-button-modify {
+  background-color: var(--inline-bg);
+}
+/* ⋮ 아이콘 자체는 공용 스프라이트(t1.daumcdn.net/.../tt_img_area_reply_*.svg)에
+   #222 로 그려져 있습니다. background-image 라 색을 직접 못 바꾸니 다크에서만
+   버튼째로 반전시킵니다. 그러면 hover 배경도 같이 반전되므로, 다크의 hover 색은
+   미리 반전시킨 값을 넣어 둡니다. #dbd9d3 을 invert(1) 하면 --inline-bg 입니다. */
+html.dark .tt-comment-cont .tt-wrap-cmt .tt-button-modify { filter: invert(1); }
+html.dark .tt-comment-cont .tt-wrap-cmt .tt-button-modify:hover,
+html.dark .tt-comment-cont .tt-wrap-cmt .tt-box-modify.tt-box-modify-open .tt-button-modify {
+  background-color: #dbd9d3;
+}
+/* 두 팝업 모두 폭이 고정(90px · 280px)이고 그 안의 자식 폭이 딱 맞게 계산돼
+   있습니다. border 를 더하면 box-sizing:border-box 때문에 내용 폭이 2px 줄어
+   비밀번호 폼의 확인 버튼이 아래로 밀립니다. 레이아웃에 영향이 없는 outline
+   으로 테두리를 냅니다. */
+.tt-comment-cont .tt-wrap-cmt .tt-list-modify,
+.tt-comment-cont .tt-wrap-cmt .tt_box_pwd {
+  background: var(--surface); outline: 1px solid var(--line-strong);
+}
+.tt-comment-cont .tt-wrap-cmt .tt-list-modify a { color: var(--fg); }
+.tt-comment-cont .tt-wrap-cmt .tt-list-modify a:hover,
+.tt-comment-cont .tt-wrap-cmt .tt-list-modify .tt-button-modify:hover {
+  background-color: var(--inline-bg);
+}
+
+/* 작성 폼 — 실제 입력은 textarea 가 아니라 .tt-cmt(contenteditable div)이고,
+   테두리는 그 바깥 .tt-inner-g 에 있습니다. */
+.tt-comment-cont .tt-area-write { margin-top: 22px; }
+.tt-comment-cont .tt-box-textarea .tt-inner-g {
+  background: var(--surface); border-color: var(--line-strong); border-radius: var(--radius);
+}
+.tt-comment-cont .tt-box-textarea:hover .tt-inner-g { border-color: var(--line-strong); }
+.tt-comment-cont .tt-box-textarea.tt-input-textarea .tt-inner-g { border-color: var(--link); }
+.tt-comment-cont .tt-box-textarea textarea,
+.tt-comment-cont .tt-box-textarea div { color: var(--fg); }
+.tt-comment-cont .tt-box-textarea .tt_txt_user { color: var(--fg); }
+.tt-comment-cont .tt-box-textarea .tt-cmt[contenteditable="true"]:empty::before { color: var(--fg-dim); }
+.tt-comment-cont .tt-area-write .tt-box-account input {
   background: var(--surface); color: var(--fg);
-  border: 1px solid var(--line-strong); border-radius: var(--radius);
-  font-family: inherit; font-size: 14.5px; line-height: 1.7;
+  border-color: var(--line-strong); border-radius: var(--radius);
 }
-.tt-box-textarea textarea:focus, .tt_inp_g:focus, .tt_form_pwd input:focus {
-  outline: none; border-color: var(--link);
-}
-.tt-box-account { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
-/* 이름·비밀번호는 짧은 입력이라 폭을 줄이고 한 줄에 나란히 둡니다.
-   위의 tt_inp_g 규칙이 width:100% 라 그대로 두면 각자 한 줄을 차지합니다. */
-.tt-box-account .tt_inp_g { width: auto; flex: 0 1 190px; }
-.tt_btn_submit, .tt-btn_register {
-  padding: 8px 16px; border: 1px solid var(--line-strong); border-radius: var(--radius);
-  background: var(--surface); color: var(--fg);
-  font-family: var(--font-mono); font-size: 12px; cursor: pointer;
-}
-.tt_btn_submit:hover, .tt-btn_register:hover { border-color: var(--link); color: var(--link); }
+.tt-comment-cont .tt-area-write .tt-box-account input:hover,
+.tt-comment-cont .tt-area-write .tt-box-account input:focus { border-color: var(--link); }
 
-@media (max-width: 768px) {
-  .tt-thumbnail { width: 30px; height: 30px; }
-  .tt_desc { font-size: 14px; }
-  .tt-item-reply .tt-list-reply { padding-left: 14px; }
+/* 등록 버튼 — 플랫폼 기본은 검정 알약에 hover 시 티스토리 주황(#ff5a4a)입니다.
+   다크에서 검정 버튼이 배경에 묻히고 주황도 팔레트 밖입니다. 폭·높이는 플랫폼
+   값을 그대로 두고 색과 모서리만 바꿉니다. */
+.tt-comment-cont .tt-btn_register {
+  background-color: transparent; border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  font-family: var(--font-mono); font-size: 12px; color: var(--fg);
 }
+.tt-comment-cont .tt-btn_register:hover,
+.tt-comment-cont .tt-btn_register:focus {
+  background-color: transparent; border-color: var(--link); color: var(--link);
+}
+.tt-comment-cont .tt-btn_register:disabled {
+  background-color: transparent; border-color: var(--line); color: var(--fg-dim);
+}
+
+/* 비밀 댓글 열람 폼 — 팝업이 280px 고정이고 그 안에서 입력 200px + 버튼 40px 이
+   딱 맞습니다. fieldset 기본 padding·margin 이 남아 있으면 폭이 모자라 버튼이
+   아래로 밀립니다. 티스토리 기본 스킨들은 전역 리셋에서 지우지만 이 스킨에는
+   없어서 여기서 지웁니다. */
+.tt-comment-cont fieldset { margin: 0; padding: 0; border: 0; }
+.tt-comment-cont .tt_form_pwd .tt_inp_g {
+  background-color: var(--surface); color: var(--fg); border-color: var(--line-strong);
+}
+.tt-comment-cont .tt_form_pwd .tt_inp_g:focus { border-color: var(--link); }
 
 /* 프로필 카드 — 티스토리가 글과 댓글 사이에 React 로 끼워 넣습니다.
    `.tt_box_namecard .tt_desc { color:#888 }` 이 배경 #f7f7f7 에서 대비 3.31 로
